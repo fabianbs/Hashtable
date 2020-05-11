@@ -25,8 +25,8 @@ These benchmarks have shown ([BenchmarkDotNet Results](BenchmarkDotNet%20Results
 `System.Collections.Generic.HashSet`/`System.Collections.Generic.Dictionary` except for successful insertions.
 
 Probably the performance gain results from using SIMD instructions. So, when your machine does not support at least SSE2 instructions, you might get different results.
-Because of linear probing and robin-hood hashing, the probability is high that one single SIMD lookup is suffient to find an elemeent in the hashtable.
+Because of linear probing and robin-hood hashing, the probability is high that one single SIMD lookup is suffient to find an element in the hashtable.
 
-The reason why successful insertion is a bit slower than the .Net implementation is because of the different algorithm. I a using robin-hood hashing to minimize the variance in 
-the probing-sequence length and to avoid the usage of tombstones/sentinels for deleted elements. However, this comes with a cost: When inserting a new element, other existing elemenets 
-may be swapped with the new one and then be reinserted. Hence, it is not surprising, that successful insertion is a bit slower, but as the other benchmark results show, it is worth it.
+The reason why successful insertion is a bit slower than the .Net implementation is because of the different algorithm. I am using robin-hood hashing to minimize the variance in 
+the probing-sequence length and to avoid the usage of tombstones/sentinels for deleted elements. However, this comes with a cost: When inserting a new element, other existing elements 
+may be swapped with the new one and then be reinserted. Hence, it is not surprising that successful insertion is a bit slower; but as the other benchmark results show, it is worth it.
