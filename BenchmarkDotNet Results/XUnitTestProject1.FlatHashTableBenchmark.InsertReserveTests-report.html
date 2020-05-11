@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>XUnitTestProject1.FlatHashTableBenchmark.InsertReserveTests-20200416-174537</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.18363.720 (1909/November2018Update/19H2)
+Intel Core i7-6700HQ CPU 2.60GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.1.201
+  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>  Method</th><th>seed</th><th>numElements</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th>
+</tr>
+</thead><tbody><tr><td>GroundTruthAdd</td><td>42</td><td>100</td><td>2.694 &mu;s</td><td>0.0540 &mu;s</td><td>0.1364 &mu;s</td><td>2.637 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>42</td><td>100</td><td>3.137 &mu;s</td><td>0.0453 &mu;s</td><td>0.0402 &mu;s</td><td>3.121 &mu;s</td><td>1.11</td><td>0.05</td>
+</tr><tr><td>GroundTruthAdd</td><td>42</td><td>1000</td><td>28.150 &mu;s</td><td>0.5541 &mu;s</td><td>0.7205 &mu;s</td><td>27.890 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>42</td><td>1000</td><td>63.774 &mu;s</td><td>0.7380 &mu;s</td><td>0.6904 &mu;s</td><td>63.807 &mu;s</td><td>2.25</td><td>0.07</td>
+</tr><tr><td>GroundTruthAdd</td><td>42</td><td>10000</td><td>334.817 &mu;s</td><td>1.5066 &mu;s</td><td>1.4093 &mu;s</td><td>334.500 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>42</td><td>10000</td><td>488.007 &mu;s</td><td>4.7432 &mu;s</td><td>4.2047 &mu;s</td><td>486.310 &mu;s</td><td>1.46</td><td>0.02</td>
+</tr><tr><td>GroundTruthAdd</td><td>432</td><td>100</td><td>2.426 &mu;s</td><td>0.0337 &mu;s</td><td>0.0299 &mu;s</td><td>2.431 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>432</td><td>100</td><td>3.248 &mu;s</td><td>0.0193 &mu;s</td><td>0.0171 &mu;s</td><td>3.245 &mu;s</td><td>1.34</td><td>0.02</td>
+</tr><tr><td>GroundTruthAdd</td><td>432</td><td>1000</td><td>27.922 &mu;s</td><td>0.4856 &mu;s</td><td>0.4542 &mu;s</td><td>27.697 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>432</td><td>1000</td><td>39.157 &mu;s</td><td>0.2483 &mu;s</td><td>0.2073 &mu;s</td><td>39.129 &mu;s</td><td>1.40</td><td>0.02</td>
+</tr><tr><td>GroundTruthAdd</td><td>432</td><td>10000</td><td>341.808 &mu;s</td><td>6.6514 &mu;s</td><td>7.1169 &mu;s</td><td>340.075 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>FHSAdd</td><td>432</td><td>10000</td><td>464.894 &mu;s</td><td>2.1014 &mu;s</td><td>1.9656 &mu;s</td><td>464.912 &mu;s</td><td>1.36</td><td>0.03</td>
+</tr></tbody></table>
+</body>
+</html>

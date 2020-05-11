@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>XUnitTestProject1.FlatHashTableBenchmark-20200508-171937</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.18363.778 (1909/November2018Update/19H2)
+Intel Core i7-6700HQ CPU 2.60GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.1.201
+  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>      Method</th><th>   Categories</th><th>seed</th><th>numElements</th><th>  Mean</th><th>Error</th><th>StdDev</th><th>Ratio</th><th>RatioSD</th>
+</tr>
+</thead><tbody><tr><td>GroundTruthAdd</td><td>Insert</td><td>42</td><td>100</td><td>3.162 &mu;s</td><td>0.0277 &mu;s</td><td>0.0259 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>42</td><td>100</td><td>4.497 &mu;s</td><td>0.0315 &mu;s</td><td>0.0295 &mu;s</td><td>1.42</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>42</td><td>100</td><td>3.024 &mu;s</td><td>0.0159 &mu;s</td><td>0.0149 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>42</td><td>100</td><td>2.969 &mu;s</td><td>0.0184 &mu;s</td><td>0.0172 &mu;s</td><td>0.98</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>42</td><td>100</td><td>12.217 &mu;s</td><td>0.0730 &mu;s</td><td>0.0647 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>42</td><td>100</td><td>12.350 &mu;s</td><td>0.0450 &mu;s</td><td>0.0376 &mu;s</td><td>1.01</td><td>0.01</td>
+</tr><tr><td>GroundTruthAdd</td><td>Insert</td><td>42</td><td>1000</td><td>37.505 &mu;s</td><td>0.1773 &mu;s</td><td>0.1572 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>42</td><td>1000</td><td>53.255 &mu;s</td><td>0.2689 &mu;s</td><td>0.2383 &mu;s</td><td>1.42</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>42</td><td>1000</td><td>31.683 &mu;s</td><td>0.2381 &mu;s</td><td>0.2227 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>42</td><td>1000</td><td>30.984 &mu;s</td><td>0.1618 &mu;s</td><td>0.1351 &mu;s</td><td>0.98</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>42</td><td>1000</td><td>186.174 &mu;s</td><td>1.2186 &mu;s</td><td>1.1399 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>42</td><td>1000</td><td>233.621 &mu;s</td><td>0.5571 &mu;s</td><td>0.4652 &mu;s</td><td>1.26</td><td>0.01</td>
+</tr><tr><td>GroundTruthAdd</td><td>Insert</td><td>42</td><td>10000</td><td>463.567 &mu;s</td><td>3.0632 &mu;s</td><td>2.5579 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>42</td><td>10000</td><td>644.262 &mu;s</td><td>8.0015 &mu;s</td><td>7.0931 &mu;s</td><td>1.39</td><td>0.02</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>42</td><td>10000</td><td>372.656 &mu;s</td><td>2.9280 &mu;s</td><td>2.7389 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>42</td><td>10000</td><td>315.710 &mu;s</td><td>2.7774 &mu;s</td><td>2.5980 &mu;s</td><td>0.85</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>42</td><td>10000</td><td>2,734.716 &mu;s</td><td>29.8276 &mu;s</td><td>26.4414 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>42</td><td>10000</td><td>3,188.420 &mu;s</td><td>23.1936 &mu;s</td><td>21.6954 &mu;s</td><td>1.17</td><td>0.01</td>
+</tr><tr><td>GroundTruthAdd</td><td>Insert</td><td>432</td><td>100</td><td>3.292 &mu;s</td><td>0.0331 &mu;s</td><td>0.0293 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>432</td><td>100</td><td>4.535 &mu;s</td><td>0.0503 &mu;s</td><td>0.0470 &mu;s</td><td>1.38</td><td>0.02</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>432</td><td>100</td><td>2.960 &mu;s</td><td>0.0202 &mu;s</td><td>0.0189 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>432</td><td>100</td><td>2.897 &mu;s</td><td>0.0138 &mu;s</td><td>0.0123 &mu;s</td><td>0.98</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>432</td><td>100</td><td>11.414 &mu;s</td><td>0.0947 &mu;s</td><td>0.0886 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>432</td><td>100</td><td>12.172 &mu;s</td><td>0.1116 &mu;s</td><td>0.0989 &mu;s</td><td>1.07</td><td>0.01</td>
+</tr><tr><td>GroundTruthAdd</td><td>Insert</td><td>432</td><td>1000</td><td>38.037 &mu;s</td><td>0.3763 &mu;s</td><td>0.3520 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>432</td><td>1000</td><td>46.511 &mu;s</td><td>0.4373 &mu;s</td><td>0.4090 &mu;s</td><td>1.22</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>432</td><td>1000</td><td>30.920 &mu;s</td><td>0.2557 &mu;s</td><td>0.2392 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>432</td><td>1000</td><td>31.137 &mu;s</td><td>0.3005 &mu;s</td><td>0.2811 &mu;s</td><td>1.01</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>432</td><td>1000</td><td>184.340 &mu;s</td><td>1.4965 &mu;s</td><td>1.3999 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>432</td><td>1000</td><td>245.756 &mu;s</td><td>1.2496 &mu;s</td><td>1.0435 &mu;s</td><td>1.33</td><td>0.01</td>
+</tr><tr><td>GroundTruthAdd</td><td>Insert</td><td>432</td><td>10000</td><td>458.351 &mu;s</td><td>2.4181 &mu;s</td><td>2.2619 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSAdd</td><td>Insert</td><td>432</td><td>10000</td><td>652.913 &mu;s</td><td>5.6084 &mu;s</td><td>4.9717 &mu;s</td><td>1.42</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAdd</td><td>ReserveInsert</td><td>432</td><td>10000</td><td>368.031 &mu;s</td><td>3.1926 &mu;s</td><td>2.9864 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAdd</td><td>ReserveInsert</td><td>432</td><td>10000</td><td>313.505 &mu;s</td><td>3.1039 &mu;s</td><td>2.9034 &mu;s</td><td>0.85</td><td>0.01</td>
+</tr><tr><td>RGroundTruthAddStr</td><td>ReserveInsertString</td><td>432</td><td>10000</td><td>2,722.400 &mu;s</td><td>14.1230 &mu;s</td><td>12.5197 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>RVFHSAddStr</td><td>ReserveInsertString</td><td>432</td><td>10000</td><td>3,183.175 &mu;s</td><td>26.3463 &mu;s</td><td>24.6443 &mu;s</td><td>1.17</td><td>0.01</td>
+</tr></tbody></table>
+</body>
+</html>

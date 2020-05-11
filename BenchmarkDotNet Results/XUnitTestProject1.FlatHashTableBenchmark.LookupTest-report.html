@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>XUnitTestProject1.FlatHashTableBenchmark.LookupTest-20200503-195827</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.18363.778 (1909/November2018Update/19H2)
+Intel Core i7-6700HQ CPU 2.60GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.1.201
+  [Host]     : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.3 (CoreCLR 4.700.20.11803, CoreFX 4.700.20.12001), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>Seed</th><th>NumEntries</th><th>NumLookups</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th>
+</tr>
+</thead><tbody><tr><td>GroundTruth</td><td>42</td><td>10000</td><td>1000</td><td>18.823 &mu;s</td><td>0.3399 &mu;s</td><td>0.7317 &mu;s</td><td>18.542 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>10000</td><td>1000</td><td>9.848 &mu;s</td><td>0.0417 &mu;s</td><td>0.0390 &mu;s</td><td>9.840 &mu;s</td><td>0.51</td><td>0.02</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>10000</td><td>2000</td><td>42.195 &mu;s</td><td>0.2605 &mu;s</td><td>0.2436 &mu;s</td><td>42.154 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>10000</td><td>2000</td><td>20.024 &mu;s</td><td>0.1393 &mu;s</td><td>0.1235 &mu;s</td><td>20.001 &mu;s</td><td>0.47</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>30000</td><td>1000</td><td>19.818 &mu;s</td><td>0.2017 &mu;s</td><td>0.1887 &mu;s</td><td>19.814 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>30000</td><td>1000</td><td>11.706 &mu;s</td><td>0.1056 &mu;s</td><td>0.0988 &mu;s</td><td>11.696 &mu;s</td><td>0.59</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>30000</td><td>2000</td><td>48.952 &mu;s</td><td>0.3966 &mu;s</td><td>0.3710 &mu;s</td><td>48.974 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>30000</td><td>2000</td><td>22.708 &mu;s</td><td>0.1452 &mu;s</td><td>0.1358 &mu;s</td><td>22.667 &mu;s</td><td>0.46</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>90000</td><td>1000</td><td>21.178 &mu;s</td><td>0.2348 &mu;s</td><td>0.2196 &mu;s</td><td>21.195 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>90000</td><td>1000</td><td>11.952 &mu;s</td><td>0.0772 &mu;s</td><td>0.0722 &mu;s</td><td>11.967 &mu;s</td><td>0.56</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>90000</td><td>2000</td><td>53.158 &mu;s</td><td>0.4277 &mu;s</td><td>0.4001 &mu;s</td><td>53.112 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>90000</td><td>2000</td><td>26.264 &mu;s</td><td>0.1602 &mu;s</td><td>0.1420 &mu;s</td><td>26.256 &mu;s</td><td>0.49</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>200000</td><td>1000</td><td>21.522 &mu;s</td><td>0.1918 &mu;s</td><td>0.1794 &mu;s</td><td>21.469 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>200000</td><td>1000</td><td>12.321 &mu;s</td><td>0.0464 &mu;s</td><td>0.0434 &mu;s</td><td>12.326 &mu;s</td><td>0.57</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>42</td><td>200000</td><td>2000</td><td>55.073 &mu;s</td><td>0.4569 &mu;s</td><td>0.3816 &mu;s</td><td>55.107 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>42</td><td>200000</td><td>2000</td><td>33.303 &mu;s</td><td>0.6630 &mu;s</td><td>1.5628 &mu;s</td><td>33.367 &mu;s</td><td>0.63</td><td>0.02</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>10000</td><td>1000</td><td>19.418 &mu;s</td><td>0.2942 &mu;s</td><td>0.4220 &mu;s</td><td>19.344 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>10000</td><td>1000</td><td>9.956 &mu;s</td><td>0.0723 &mu;s</td><td>0.0676 &mu;s</td><td>9.953 &mu;s</td><td>0.51</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>10000</td><td>2000</td><td>43.068 &mu;s</td><td>0.3792 &mu;s</td><td>0.3547 &mu;s</td><td>43.046 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>10000</td><td>2000</td><td>21.847 &mu;s</td><td>0.1527 &mu;s</td><td>0.1429 &mu;s</td><td>21.864 &mu;s</td><td>0.51</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>30000</td><td>1000</td><td>20.403 &mu;s</td><td>0.2850 &mu;s</td><td>0.2666 &mu;s</td><td>20.332 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>30000</td><td>1000</td><td>11.045 &mu;s</td><td>0.0530 &mu;s</td><td>0.0651 &mu;s</td><td>11.030 &mu;s</td><td>0.54</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>30000</td><td>2000</td><td>50.536 &mu;s</td><td>0.1659 &mu;s</td><td>0.1552 &mu;s</td><td>50.506 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>30000</td><td>2000</td><td>21.791 &mu;s</td><td>0.1402 &mu;s</td><td>0.1312 &mu;s</td><td>21.828 &mu;s</td><td>0.43</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>90000</td><td>1000</td><td>20.798 &mu;s</td><td>0.1861 &mu;s</td><td>0.1740 &mu;s</td><td>20.789 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>90000</td><td>1000</td><td>11.912 &mu;s</td><td>0.0821 &mu;s</td><td>0.0728 &mu;s</td><td>11.905 &mu;s</td><td>0.57</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>90000</td><td>2000</td><td>53.710 &mu;s</td><td>0.3460 &mu;s</td><td>0.3236 &mu;s</td><td>53.631 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>90000</td><td>2000</td><td>26.643 &mu;s</td><td>0.2661 &mu;s</td><td>0.2489 &mu;s</td><td>26.660 &mu;s</td><td>0.50</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>200000</td><td>1000</td><td>21.639 &mu;s</td><td>0.2381 &mu;s</td><td>0.1988 &mu;s</td><td>21.560 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>200000</td><td>1000</td><td>11.936 &mu;s</td><td>0.1105 &mu;s</td><td>0.1033 &mu;s</td><td>11.929 &mu;s</td><td>0.55</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>422</td><td>200000</td><td>2000</td><td>53.301 &mu;s</td><td>0.4084 &mu;s</td><td>0.3820 &mu;s</td><td>53.405 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>422</td><td>200000</td><td>2000</td><td>28.790 &mu;s</td><td>0.1980 &mu;s</td><td>0.1852 &mu;s</td><td>28.816 &mu;s</td><td>0.54</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>10000</td><td>1000</td><td>18.603 &mu;s</td><td>0.1572 &mu;s</td><td>0.1471 &mu;s</td><td>18.593 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>10000</td><td>1000</td><td>10.777 &mu;s</td><td>0.0239 &mu;s</td><td>0.0200 &mu;s</td><td>10.784 &mu;s</td><td>0.58</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>10000</td><td>2000</td><td>42.475 &mu;s</td><td>0.2209 &mu;s</td><td>0.2066 &mu;s</td><td>42.516 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>10000</td><td>2000</td><td>19.995 &mu;s</td><td>0.0796 &mu;s</td><td>0.0745 &mu;s</td><td>19.986 &mu;s</td><td>0.47</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>30000</td><td>1000</td><td>20.225 &mu;s</td><td>0.1647 &mu;s</td><td>0.1540 &mu;s</td><td>20.202 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>30000</td><td>1000</td><td>11.004 &mu;s</td><td>0.0648 &mu;s</td><td>0.0607 &mu;s</td><td>10.995 &mu;s</td><td>0.54</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>30000</td><td>2000</td><td>48.587 &mu;s</td><td>0.5476 &mu;s</td><td>0.5122 &mu;s</td><td>48.487 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>30000</td><td>2000</td><td>21.747 &mu;s</td><td>0.1915 &mu;s</td><td>0.1792 &mu;s</td><td>21.704 &mu;s</td><td>0.45</td><td>0.01</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>90000</td><td>1000</td><td>22.421 &mu;s</td><td>0.1849 &mu;s</td><td>0.1639 &mu;s</td><td>22.431 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>90000</td><td>1000</td><td>11.549 &mu;s</td><td>0.0698 &mu;s</td><td>0.0653 &mu;s</td><td>11.563 &mu;s</td><td>0.52</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>90000</td><td>2000</td><td>56.876 &mu;s</td><td>0.4717 &mu;s</td><td>0.4412 &mu;s</td><td>56.981 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>90000</td><td>2000</td><td>26.424 &mu;s</td><td>0.1521 &mu;s</td><td>0.1423 &mu;s</td><td>26.421 &mu;s</td><td>0.46</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>200000</td><td>1000</td><td>21.077 &mu;s</td><td>0.1003 &mu;s</td><td>0.0837 &mu;s</td><td>21.067 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>200000</td><td>1000</td><td>12.220 &mu;s</td><td>0.0724 &mu;s</td><td>0.0677 &mu;s</td><td>12.198 &mu;s</td><td>0.58</td><td>0.00</td>
+</tr><tr><td>GroundTruth</td><td>543</td><td>200000</td><td>2000</td><td>52.661 &mu;s</td><td>0.3396 &mu;s</td><td>0.3176 &mu;s</td><td>52.576 &mu;s</td><td>1.00</td><td>0.00</td>
+</tr><tr><td>VFHSLookup</td><td>543</td><td>200000</td><td>2000</td><td>29.133 &mu;s</td><td>0.1200 &mu;s</td><td>0.1122 &mu;s</td><td>29.096 &mu;s</td><td>0.55</td><td>0.00</td>
+</tr></tbody></table>
+</body>
+</html>
