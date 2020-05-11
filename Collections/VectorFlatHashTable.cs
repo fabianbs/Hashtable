@@ -484,46 +484,10 @@ namespace Collections {
             // unreachable
             return ref arr![0];
         }
-#if false
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        public unsafe void InsertUniqueUnsafe(T key, uint idx, byte meta, byte distance, byte* metDist, byte* metHash) {
-            uint len = _capacity;
-            // assume, we wont need to rehash from here
 
-            var arr = _arrVal!;
-
-            uint cap = len - 1;
-
-            do {
-
-                var dist = metDist![idx];
-
-                if (dist == 0 && metHash![idx] == 0) {
-                    arr![idx] = key;
-                    metHash[idx] = meta;
-                    metDist![idx] = distance;
-
-                    ++size;
-                    return;
-                }
-
-                if (dist < distance) {
-                    // robin hood
-                    Swap(ref arr![idx], ref key);
-                    Swap(ref meta, ref metHash![idx]);
-                    Swap(ref distance, ref metDist[idx]);
-                }
-
-                checked {
-                    ++distance;
-                }
-
-                idx = (idx + 1) & cap;
-            } while (true);
-        }
-#endif
         /// <summary>
-        /// Inserts the <paramref name="key"/> into the hashtable. It is already known, that <paramref name="key"/> is not already contained and that there is at least one free slot
+        /// Inserts the <paramref name="key"/> into the hashtable. It is already known, that <paramref name="key"/> is not already contained,
+        /// that there is at least one free slot and that SSE2 vector instructions are supported
         /// </summary>
         /// <param name="key">The element to insert</param>
         /// <param name="idx">The index in <see cref="_arrVal"/> where to start probing</param>
@@ -636,164 +600,7 @@ namespace Collections {
             y = tmp;
             //(y, x) = (x, y);
         }
-#if false
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int LessThanOrEqual(SimdVector x, SimdVector y) {
-            return Sse.MoveMask(Sse.CompareEqual(y, Sse.Max(x, y)));
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int LessThan(SimdVector x, SimdVector y) {
-            return ~Sse.MoveMask(Sse.CompareEqual(x, Sse.Max(x, y))) & ushort.MaxValue;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        protected bool InsertInternalSimd(T key, bool canReplace) {
-            var cmp = _cmp;
-            uint len = _capacity;
-            do {
-                //uint idx = HashSlot(key is null ? 0 : cmp.GetHashCode(key), out byte meta);
-                var arr = _arrVal!;
-                var metHash = _lookupMetadata!;
-                var metDist = _distanceMetadata!;
 
-                uint cap = len - 1;
-                uint idx = HashSlot(key is null ? 0 : cmp.GetHashCode(key), _capacity, out byte meta);
-                byte distance = 0;
-                unsafe {
-                    fixed (byte* ptr = metDist, hptr = metHash) {
-
-                        for (uint i = idx; i < len; i += VEC_LEN) {
-                            var dist = Sse.LoadVector128(ptr + i);
-
-                            var actual = Sse.Add(IOTA, Simd.Create(distance));
-                            var candidates = LessThan(dist, actual);
-                            var hash = Sse.LoadVector128(hptr + i);
-                            var hCandidates = Sse.MoveMask(Sse.CompareEqual(hash, Simd.Create(meta)));
-                            var eCandidates = Sse.MoveMask(Sse.CompareEqual(hash, SimdVector.Zero));
-
-                            var x = candidates.Current() + i;
-                            var z = eCandidates.Current() + i;
-
-
-                            var xMinz = Math.Min(x, z);
-                            while ((candidates | hCandidates | eCandidates) != 0) {
-
-                                var y = hCandidates.Current() + i;
-
-                                if (xMinz < y) {
-                                    if (xMinz >= len)
-                                        break;
-
-                                    if (x >= z) {
-                                        // insert
-                                        arr![z] = key;
-                                        metHash![z] = meta;
-                                        ptr![z] = distance;
-                                        ++size;
-                                        return true;
-                                    }
-
-                                    // robin hood
-                                    //(arr![x], key) = (key, arr[x]);
-                                    Swap(ref arr![x], ref key);
-                                    //(meta, metHash![x]) = (metHash[x], meta);
-                                    Swap(ref meta, ref metHash![x]);
-                                    //(distance, ptr[x]) = (d, distance);
-                                    Swap(ref distance, ref ptr![x]);
-                                    InsertUnique(key, idx, meta, distance, x - idx);
-                                    return true;
-
-                                }
-                                else {
-                                    if (y >= len)
-                                        break;
-                                    // y is min
-                                    if (cmp.Equals(arr![y], key)) {
-                                        if (!canReplace)
-                                            return false;
-
-                                        arr[y] = key;
-                                        metHash![y] = meta;
-                                        ptr![y] = distance;
-                                        return true;
-                                    }
-
-                                    hCandidates = hCandidates.MoveNext();
-                                }
-                            }
-
-
-                            checked {
-                                distance += unchecked((byte) Math.Min(VEC_LEN, len - i));
-                            }
-                        }
-                        for (uint i = 0; i < idx; i += VEC_LEN) {
-                            var dist = Sse.LoadVector128(ptr + i);
-
-                            var actual = Sse.Add(IOTA, Simd.Create(distance));
-                            var candidates = LessThan(dist, actual);
-                            var hash = Sse.LoadVector128(hptr + i);
-                            var hCandidates = Sse.MoveMask(Sse.CompareEqual(hash, Simd.Create(meta)));
-                            var eCandidates = Sse.MoveMask(Sse.CompareEqual(hash, SimdVector.Zero));
-
-                            var x = candidates.Current() + i;
-                            var z = eCandidates.Current() + i;
-                            var xMinz = Math.Min(x, z);
-                            while ((candidates | hCandidates | eCandidates) != 0) {
-
-                                var y = hCandidates.Current() + i;
-
-                                if (xMinz < y) {
-
-                                    if (x >= z) {
-                                        // insert
-                                        arr![z] = key;
-                                        metHash![z] = meta;
-                                        ptr![z] = distance;
-                                        ++size;
-                                        return true;
-                                    }
-
-                                    // robin hood
-                                    //(arr![x], key) = (key, arr[x]);
-                                    Swap(ref arr![x], ref key);
-                                    //(meta, metHash![x]) = (metHash[x], meta);
-                                    Swap(ref meta, ref metHash![x]);
-                                    //(distance, ptr[x]) = (d, distance);
-                                    Swap(ref distance, ref ptr![x]);
-                                    InsertUnique(key, idx, meta, distance, x - idx);
-                                    return true;
-
-                                }
-                                else {
-
-                                    // y is min
-                                    if (cmp.Equals(arr![y], key)) {
-                                        if (!canReplace)
-                                            return false;
-
-                                        arr[y] = key;
-                                        metHash![y] = meta;
-                                        ptr![y] = distance;
-                                        return true;
-                                    }
-
-                                    hCandidates = hCandidates.MoveNext();
-                                }
-                            }
-
-                            checked {
-                                distance += unchecked((byte) VEC_LEN);
-                            }
-                        }
-                    }
-                }
-
-
-                Rehash();
-                len = _capacity;
-            } while (true);
-        }
-#endif
         /// <summary>
         /// Tries to insert the given <paramref name="key"/> into the hashtable. It is already known, that there is at least one free slot left
         /// </summary>
@@ -812,50 +619,52 @@ namespace Collections {
                 uint idx = HashSlot(key is null ? 0 : cmp.GetHashCode(key), _capacity, out byte meta);
                 byte distance = 0;
                 //var numDistMask = numDist!.ULength() - 1;
-                var vec = Sse.LoadVector128(metHash + idx);
-                int mask = Sse.MoveMask(Sse.CompareEqual(vec, Simd.Create(meta)));
-                while (mask != 0) {
-                    uint i = idx + mask.Next();
-                    if (cmp.Equals(arr![i], key)) {
-                        if (!canReplace)
-                            return false;
+                if (Sse.IsSupported) {
+                    var vec = Sse.LoadVector128(metHash + idx);
+                    int mask = Sse.MoveMask(Sse.CompareEqual(vec, Simd.Create(meta)));
+                    while (mask != 0) {
+                        uint i = idx + mask.Next();
+                        if (cmp.Equals(arr![i], key)) {
+                            if (!canReplace)
+                                return false;
 
-                        arr[i] = key;
-                        metHash![i] = meta;
-                        metDist![i] = distance;
-                        return true;
-                    }
-                }
-
-                uint end = Math.Min(VEC_LEN, len - idx);
-                for (uint i = 0; i < end; ++i) {
-                    byte sHash = metHash![idx];
-                    if (sHash == 0) {
-                        arr![idx] = key;
-                        metHash[idx] = meta;
-                        metDist![idx] = distance;
-
-                        ++size;
-                        return true;
+                            arr[i] = key;
+                            metHash![i] = meta;
+                            metDist![i] = distance;
+                            return true;
+                        }
                     }
 
-                    byte dist = metDist![idx];
-                    if (dist < distance) {
-                        // robin hood
-                        //(arr![x], key) = (key, arr[x]);
-                        Swap(ref arr![idx], ref key);
-                        //(meta, metHash![x]) = (metHash[x], meta);
-                        Swap(ref meta, ref metHash![idx]);
-                        //(distance, ptr[x]) = (d, distance);
-                        Swap(ref distance, ref metDist[idx]);
+                    uint end = Math.Min(VEC_LEN, len - idx);
+                    for (uint i = 0; i < end; ++i) {
+                        byte sHash = metHash![idx];
+                        if (sHash == 0) {
+                            arr![idx] = key;
+                            metHash[idx] = meta;
+                            metDist![idx] = distance;
 
-                        InsertUniqueUnsafe(key, idx, meta, distance, metDist, metHash);
-                        return true;
+                            ++size;
+                            return true;
+                        }
+
+                        byte dist = metDist![idx];
+                        if (dist < distance) {
+                            // robin hood
+                            //(arr![x], key) = (key, arr[x]);
+                            Swap(ref arr![idx], ref key);
+                            //(meta, metHash![x]) = (metHash[x], meta);
+                            Swap(ref meta, ref metHash![idx]);
+                            //(distance, ptr[x]) = (d, distance);
+                            Swap(ref distance, ref metDist[idx]);
+
+                            InsertUniqueUnsafe(key, idx, meta, distance, metDist, metHash);
+                            return true;
+                        }
+
+                        // can be unchecked here, since 0 + 16 does not overflow
+                        ++distance;
+                        idx = (idx + 1) & cap;
                     }
-
-                    // can be unchecked here, since 0 + 16 does not overflow
-                    ++distance;
-                    idx = (idx + 1) & cap;
                 }
 
                 do {
@@ -879,7 +688,11 @@ namespace Collections {
                         //(distance, ptr[x]) = (d, distance);
                         Swap(ref distance, ref metDist[idx]);
 
-                        InsertUniqueUnsafe(key, idx, meta, distance, metDist, metHash);
+                        if (Sse.IsSupported)
+                            InsertUniqueUnsafe(key, idx, meta, distance, metDist, metHash);
+                        else
+                            InsertUnique(key, idx, meta, distance);
+
                         return true;
                     }
 
@@ -1108,8 +921,6 @@ namespace Collections {
                         var key = arr[i];
                         uint idx = HashSlot(key is null ? 0 : cmp.GetHashCode(key), minCap, out byte meta);
                         InsertUnique(key, idx, meta, 0);
-                        //InsertInternal(key, false, idx, meta, 0);
-                        //Insert(arr[i], false);
                     }
             }
         }
@@ -1120,57 +931,6 @@ namespace Collections {
             Rehash(_capacity << 1);
         }
 
-#if false
-        protected ref T ComputeIfAbsent(T key, Func<T, T> mapper) {
-            if (_arrVal is null)
-                Initialize();
-            else if (size > LOAD_FACTOR * _capacity)
-                Rehash();
-
-            var cmp = _cmp;
-
-            uint idx = HashSlot(key is null ? 0 : cmp.GetHashCode(key), out byte meta);
-            T[] arr = _arrVal!;
-            var metHash = _lookupMetadata!;
-            var metDist = _distanceMetadata!;
-
-            uint len = _capacity;
-
-            byte distance = 0;
-
-            for (uint i = 0; i < len; ++i, idx = (idx + 1) & (_capacity - 1)) {
-                byte sHash = metHash![idx];
-                if (sHash == 0) {
-                    arr![idx] = mapper(key);
-                    metHash[idx] = meta;
-                    metDist![idx] = distance;
-                    ++size;
-                    return ref arr[idx];
-                }
-
-                if (sHash == meta && cmp.Equals(key, arr![idx])) {
-                    return ref arr[idx];
-                }
-
-                if (metDist![idx] < distance) {
-                    // robin hood
-                    var insKy = mapper(key);
-                    (arr![idx], key) = (insKy, arr[idx]);
-                    (meta, metHash[idx]) = (metHash[idx], meta);
-                    (distance, metDist[idx]) = (metDist[idx], distance);
-                    InsertInternal(key, false, idx, meta, distance);
-                    return ref (_arrVal == arr ? ref arr[idx] : ref GetOrElse(insKy, ref arr[idx]));
-                }
-
-                checked {
-                    ++distance;
-                }
-            }
-
-            // unreachable
-            return ref arr![0];
-        }
-#endif
         /// <summary>
         /// An enumerator, which can be used to iterate through the hashtable. However, if all elements should be iterated in a loop, prefer
         /// <see cref="VectorFlatHashTable{T}.ForEach(System.Action{T})"/> or <see cref="VectorFlatHashTable{T}.ForEach(System.Func{T,bool})"/>
@@ -1306,7 +1066,7 @@ namespace Collections {
     }
 
     /// <summary>
-    /// The base class of all generic instantiations of <see cref="VectorFlatHashTable{T}"/>. Holds static constats and provides some utility
+    /// The base class of all generic instantiations of <see cref="VectorFlatHashTable{T}"/>. Holds static constants and provides some utility
     /// functionality which is independent from any type parameter
     /// </summary>
     public class VectorFlatHashTableBase {
